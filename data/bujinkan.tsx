@@ -9,6 +9,10 @@ export const kamae = [
     image: "https://i.imgur.com/yZHKyKQ.png"
   },
   {
+    name: "Doko",
+    image: "/Screenshot 2020-11-06 at 12.13.42.png"
+  },
+  {
     name: "Ko Ichimonji",
     image:
       "https://i.pinimg.com/originals/7c/3f/5c/7c3f5c2ec282adcf033eadfe6f55974c.jpg"
@@ -64,21 +68,22 @@ export const direction = ["Forward", "In place", "Backwards"];
 export const height = ["Jodan", "Chudan", "Gedan"];
 
 export const strike = [
-  "Uke",
-  "Fudo Ken (clenched fist)",
-  "Shuto / Shto / Kiten Ken",
-  "Boshi / Shito Ken",
-  "Shako Ken (claw)",
-  "Shikan Ken",
-  "Shitan Ken",
-  "Shi Shin Ken",
-  "Koppo / Ko / Nio Ken (Thumb Knuckle)",
-  "Happa Ken (Hand-ear slap)",
-  "Shizen Ken",
-  "Kikaku Ken (headbutt)",
-  "Shuki Ken",
-  "Tai Ken (Full Body Charge)",
-  "Sokki Ken (Knee Strike)",
-  "Sokuyaku Ken / Keri (Jumping Front Kick)",
-  "Sokugyaku Ken / Keri (Horse Kick)"
+  { name: "Uke" },
+  { name: "Fudo Ken (clenched fist)", image: "/Screenshot 2020-11-06 at 12.13.12.png" },
+  { name: "Shuto / Shto / Kiten Ken", image: "/Screenshot 2020-11-06 at 12.13.19.png" },
+  { name: "Boshi / Shito Ken", image: "/Screenshot 2020-11-06 at 12.12.36.png" },
+  { name: "Shako Ken (claw)", image: "/Screenshot 2020-11-06 at 12.13.26.png" },
+  { name: "Shi Kan Ken", image: "/Screenshot 2020-11-06 at 12.13.15.png" },
+  { name: "Shi Tan Ken", image: "/Screenshot 2020-11-06 at 12.18.54.png" },
+  { name: "San Shitan Ken", image: "/Screenshot 2020-11-06 at 12.13.23.png" },
+  { name: "Shi Shin Ken", image: "/Screenshot 2020-11-06 at 12.19.00.png" },
+  { name: "Koppo / Ko / Nio Ken (Thumb Knuckle)", image: "/Screenshot 2020-11-06 at 12.19.03.png" },
+  // { name: "Happa Ken (Hand-ear slap)", image: "/" },
+  { name: "Shizen Ken" },
+  // { name: "Kikaku Ken (headbutt)" },
+  { name: "Shuki Ken" },
+  // { name: "Tai Ken (Full Body Charge)" },
+  { name: "Sokki Ken (Knee Strike)" },
+  { name: "Sokuyaku Ken / Keri (Jumping Front Kick)" },
+  { name: "Sokugyaku Ken / Keri (Horse Kick)", image: "/Screenshot 2020-11-06 at 12.21.17.png" },
 ];

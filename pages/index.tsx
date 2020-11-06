@@ -1,6 +1,8 @@
-import { random, sample } from "lodash";
+import { random, sample, isMatch } from "lodash";
 import * as buj from '../data/bujinkan'
 import * as React from 'react';
+import { getDominantColor } from 'img-color'
+import { readableColor } from 'polished'
 
 function useHistory<X>(nextState: X) {
   const [history, setHistory] = React.useState<X[]>([]);
@@ -12,7 +14,7 @@ function useHistory<X>(nextState: X) {
   return [history, setHistory] as [typeof history, typeof setHistory];
 }
 
-const generateSequence = (steps = 3) => {
+const generateSequence = (steps = 1) => {
   let stepsFilled = 0;
   let newSequence: any = [];
   while (stepsFilled < steps) {
@@ -29,17 +31,35 @@ const generateSequence = (steps = 3) => {
 };
 
 export default function App() {
-  const [sequence, setSequence] = React.useState(generateSequence(3));
+  const [sequence, setSequence] = React.useState(generateSequence(20));
   const [sequenceHistory, setHistory] = useHistory(sequence);
+  const sequenceRef = React.useRef<HTMLDivElement>(null)
 
   const changeSequence = () => {
-    const steps = random(3, 4);
-    setSequence(generateSequence(steps));
+    const lastSequence = sequenceHistory[sequenceHistory.length - 1]
+    let nextSequence
+    do {
+      nextSequence = generateSequence(20)
+      console.log(nextSequence[0].kamae.name === lastSequence[0].kamae.name, nextSequence[0].kamae.name, lastSequence[0].kamae.name)
+    } while (nextSequence[0].kamae.name === lastSequence[0].kamae.name)
+    setSequence(nextSequence);
   };
 
+  React.useEffect(() => {
+    window.scrollTo({ top: sequenceRef?.current?.offsetTop || 50, behavior: "smooth" })
+    const interval = setInterval(() => {
+      window.scrollTo({ top: window.scrollY + window.screen.height, behavior: "smooth" })
+    }, 10000)
+    return () => {
+      clearInterval(interval)
+      window.scrollTo({ top: sequenceRef.current.offsetTop, behavior: "smooth" })
+    }
+  }, [sequence])
+
   return (
+    <>
     <div
-      className="App px-4 md:px-6 mx-auto my-6 py-6"
+      className="px-4 md:px-6 mx-auto my-6 py-6"
       style={{
         maxWidth: 700
       }}
@@ -53,12 +73,30 @@ export default function App() {
           🎲 New Sequence
         </button>
       </div>
-      <Sequence steps={sequence} />
-      <hr
+    </div>
+    <div ref={sequenceRef}>
+    {sequence.map((step, i) =>
+      <div
+        className="mx-auto"
         style={{
-          margin: 50
+          maxWidth: 1000
         }}
-      />
+      >
+        <SequenceSlide key={i} step={step} />
+      </div>
+    )}
+    </div>
+    <hr
+      style={{
+        margin: 50
+      }}
+    />
+    <div
+      className="px-4 md:px-6 mx-auto my-6 py-6"
+      style={{
+        maxWidth: 700
+      }}
+    >
       {sequenceHistory.slice(0, sequenceHistory.length - 1).length > 0 && (
         <div>
           <div className="flex flex-row justify-between items-start">
@@ -83,8 +121,46 @@ export default function App() {
           </pre>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
+}
+
+function SequenceSlide({ step }) {
+  return (
+    <div style={{ height: '100vh' }} className='grid grid-rows-3 overflow-hidden rounded-md'>
+      <div className='grid grid-cols-2 row-span-2  text-3xl'>
+        <div className='bg-black'
+          style={{
+            backgroundImage: `url("${step.kamae.image}")`,
+            backgroundPosition: "center top",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            filter: "grayscale(100%) contrast(125%)",
+          }}
+        ></div>
+        <div className='p-4 text-center flex flex-col justify-center items-center bg-black text-white font-bold'>
+          <div className='text-opacity-50 text-white'>{step.orientation}</div>
+          <div>{step.kamae.name}</div>
+        </div>
+      </div>
+      <div className='grid grid-cols-2'>
+        <div className='p-4 text-center flex flex-col justify-center items-center text-lg bg-black text-white font-bold'>
+          <div className='text-opacity-50 text-white'>{step.height}</div>
+          <div>{step.strike.name}</div>
+        </div>
+        <div className='bg-black'
+          style={{
+            backgroundImage: `url("${step.strike.image}")`,
+            backgroundPosition: "center top",
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            filter: "grayscale(100%) contrast(125%)",
+          }}
+        ></div>
+      </div>
+    </div>
+  )
 }
 
 function Sequence({ steps }) {
@@ -119,7 +195,7 @@ function Sequence({ steps }) {
                 Into <b>{step.kamae.name}</b>
               </div>
               <div className="text-gray-500">
-                Striking with {step.height} {step.strike}
+                Striking with {step.height} {step.strike.name}
                 <br />
               </div>
               <div className="text-gray-500">{step.direction}</div>
